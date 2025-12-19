@@ -1,23 +1,14 @@
-# 🎧 pod.cache
-> **Efficient Knowledge Caching from Daily Podcasts.**
+# 💡 메인 대시보드
 
-매일 듣는 팟캐스트의 핵심 인사이트를 휘발되지 않게 캐싱하는 개인 지식 저장소입니다.
+### ⚡ 최신 요약
+- [2025-12-19 [Marketing] Brand Story](archives/2025/12/2025-12-19-marketing-brand-story.md)
 
-## 🛠 Cache Strategy
-- **Frequency:** Daily 2 Episodes (3~5 mins each)
-- **Format:** [3-2-1 Insight Template](#)
-- **Storage:** Monthly-based Markdown files in `/archives`
+### 📂 토픽별 모아보기
+- [Marketing](topics/marketing.md)
 
----
+### 📅 월별 아카이브
+- [2025년 12월](archives/2025/12/)
+- [2025년 11월](archives/2025/11/)
 
-## ⚡ Recent Caches (LIFO)
-- 
-
----
-
-## 📂 Cache Hierarchy
-- [2025 Archives](archives/2025/)
-- [Templates](templates/)
-
----
-*Created by sushistack. Keep Listening, Keep Caching.*
+### 🗄️ 연도별
+- [2025년 전체](archives/2025/)
