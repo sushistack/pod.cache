@@ -430,21 +430,21 @@ def handle_raw_files(root_dir):
                          break
             
             if target_raw_file and target_raw_file in os.listdir(raw_dir):
-                 # Do the linking
-                 expected_raw_name = target_raw_file # consistency
+                # Do the linking
+                expected_raw_name = target_raw_file # consistency
                  
-                 with open(summary_path, 'r', encoding='utf-8') as f:
+                with open(summary_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                 
-                 link_text = f"[📄 원본 파일 보기](raw/{expected_raw_name})"
-                 placeholder_regex = r'\(raw/.*?-original\.md\)'
+                link_text = f"[📄 원본 파일 보기](raw/{expected_raw_name})"
+                placeholder_regex = r'\(raw/.*?-original\.md\)'
                  
-                 if f"(raw/{expected_raw_name})" in content:
+                if f"(raw/{expected_raw_name})" in content:
                     continue
 
-                 # 1. Replace existing placeholder
+                # 1. Replace existing placeholder
                 if re.search(placeholder_regex, content):
-                     content = re.sub(placeholder_regex, f'(raw/{expected_raw_name})', content)
+                    content = re.sub(placeholder_regex, f'(raw/{expected_raw_name})', content)
                 else:
                     # 2. Inject if missing
                     # Insert after the first H2 header (## ...)
@@ -456,10 +456,6 @@ def handle_raw_files(root_dir):
                         new_content = content[:header_end] + f"\n> {link_text}\n" + content[header_end:]
                         content = new_content
                     else:
-                        # Fallback: Top of file (after frontmatter if exists) but complicated.
-                        # If no header found, maybe just append? Or skip?
-                        # Let's simple append to top if no header? No, that breaks frontmatter.
-                        # Let's skip if no header, assuming standard template usage.
                         pass
                 
                 with open(summary_path, 'w', encoding='utf-8') as f:
