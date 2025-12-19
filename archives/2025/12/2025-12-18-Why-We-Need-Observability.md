@@ -5,6 +5,9 @@ number: 2
 
 ## 2025-12-18 Observability의 필요성
 
+[📄 원본 파일 보기](raw/002. From Monoliths to Microservices Why We Need Observability.md)
+
+
 <details>
 <summary>모놀리식 -> 마이크로 전환 시, Observability의 필요성</summary>
 
