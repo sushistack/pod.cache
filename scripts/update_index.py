@@ -453,7 +453,7 @@ def handle_raw_files(root_dir):
                     if header_match:
                         # Insert link after the header
                         header_end = header_match.end()
-                        new_content = content[:header_end] + f"\n> {link_text}\n" + content[header_end:]
+                        new_content = content[:header_end] + f"\n\n{link_text}\n" + content[header_end:]
                         content = new_content
                     else:
                         pass
