@@ -4,7 +4,8 @@ number: 1
 ---
 
 ## 2025-12-18 Observability 란?
-> [📄 원본 파일 보기](raw/001. Introduction.md)
+
+[📄 원본 파일 보기](raw/001. Introduction.md)
 
 
 
