@@ -1,6 +1,7 @@
 import os
 import re
 import urllib.request
+import urllib.parse
 import json
 from datetime import datetime
 from collections import defaultdict
@@ -436,11 +437,23 @@ def handle_raw_files(root_dir):
                 with open(summary_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                 
-                link_text = f"[📄 원본 파일 보기](raw/{expected_raw_name})"
+                # URL encode the filename for the link
+                encoded_name = urllib.parse.quote(expected_raw_name)
+                link_text = f"[📄 원본 파일 보기](raw/{encoded_name})"
                 placeholder_regex = r'\(raw/.*?-original\.md\)'
                  
-                if f"(raw/{expected_raw_name})" in content:
+                # Check for encoded presence
+                if f"(raw/{encoded_name})" in content:
                     continue
+
+                # Check if unencoded link exists and needs fixing
+                unencoded_link = f"(raw/{expected_raw_name})"
+                if unencoded_link in content:
+                    # Fix it
+                     content = content.replace(unencoded_link, f"(raw/{encoded_name})")
+                     with open(summary_path, 'w', encoding='utf-8') as f:
+                        f.write(content)
+                     continue
 
                 # 1. Replace existing placeholder
                 if re.search(placeholder_regex, content):
