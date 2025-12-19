@@ -11,8 +11,7 @@
 ---
 
 ## ⚡ Recent Caches (LIFO)
-- [2025-12-19] [Tech] AI 에이전트의 발전 방향 - [View](archives/2025/12-december.md#2025-12-19)
-- [2025-12-18] [English] 비즈니스 영어 관용구 - [View](archives/2025/12-december.md#2025-12-18)
+- 
 
 ---
 
@@ -21,4 +20,4 @@
 - [Templates](templates/)
 
 ---
-*Created by [YourName]. Keep Listening, Keep Caching.*
+*Created by sushistack. Keep Listening, Keep Caching.*
