@@ -142,10 +142,11 @@ def parse_summary_file(filepath):
         content = f.read()
         
         # Regex to find the header: ## 2025-12-19 [Marketing] Brand Story
-        match = re.search(r'^##\s+(\d{4}-\d{2}-\d{2})\s+\[(.*?)\]\s+(.*)$', content, re.MULTILINE)
+        # Relaxed: ## 2025-12-19 Title (Topic might be missing)
+        match = re.search(r'^##\s+(\d{4}-\d{2}-\d{2})\s+(?:\[(.*?)\]\s+)?(.*)$', content, re.MULTILINE)
         if match:
             date_str = match.group(1)
-            topic = match.group(2).strip()
+            topic = match.group(2).strip() if match.group(2) else None
             title = match.group(3).strip()
         else:
             # Fallback for filenames if header is missing/malformed: YYYY-MM-DD-Topic-Title.md
@@ -163,107 +164,6 @@ def parse_summary_file(filepath):
 def get_relative_path(from_path, to_path):
     return os.path.relpath(to_path, os.path.dirname(from_path))
 
-def update_topic_indices(summaries):
-    """
-    Updates or creates topic index files in topics/
-    """
-    topics = defaultdict(list)
-    for s in summaries:
-        if s['topic']:
-            topics[s['topic']].append(s)
-
-    if not os.path.exists(TOPICS_DIR):
-        os.makedirs(TOPICS_DIR)
-
-    for topic, items in topics.items():
-        # Sort by date descending
-        items.sort(key=lambda x: x['date'] or "", reverse=True)
-        
-        topic_filename = f"{topic.lower().replace(' ', '-')}.md"
-        topic_path = os.path.join(TOPICS_DIR, topic_filename)
-        
-        content = f"# {topic}\n\n[← Dashboard](../README.md)\n\n## 📚 학습 로그\n"
-        for item in items:
-            rel_path = get_relative_path(topic_path, item['filepath'])
-            content += f"- [{item['date']} {item['title']}]({rel_path})\n"
-            
-        with open(topic_path, 'w', encoding='utf-8') as f:
-            f.write(content)
-            
-    return sorted(topics.keys())
-
-def update_monthly_indices(summaries):
-    """
-    Updates README.md in each archives/YYYY/MM/ directory
-    """
-    months = defaultdict(list)
-    for s in summaries:
-        if s['date']:
-            # archives/2025/12
-            d = datetime.strptime(s['date'], '%Y-%m-%d')
-            key = (d.year, d.month)
-            months[key].append(s)
-
-    for (year, month), items in months.items():
-        # Sort by date descending
-        items.sort(key=lambda x: x['date'] or "", reverse=True)
-        
-        month_str = f"{month:02d}"
-        month_dir = os.path.join(ARCHIVES_DIR, str(year), month_str)
-        if not os.path.exists(month_dir):
-            continue # Should exist since files are there
-            
-        readme_path = os.path.join(month_dir, "README.md")
-        
-        content = f"# {year}년 {month}월\n\n[← Dashboard](../../README.md)\n\n## 🗂️ 목록\n"
-        for item in items:
-            rel_path = item['filename'] # Same directory
-            content += f"- [{item['date']} [{item['topic']}] {item['title']}]({rel_path})\n"
-            
-        with open(readme_path, 'w', encoding='utf-8') as f:
-            f.write(content)
-
-def update_main_readme(summaries, topic_list):
-    """
-    Updates the main README.md
-    """
-    # Sort all summaries by date descending
-    summaries.sort(key=lambda x: x['date'] or "", reverse=True)
-    recent = summaries[:RECENT_LIMIT]
-    
-    # Generate content
-    content = "# 💡 메인 대시보드\n\n"
-    
-    # Recent
-    content += "### ⚡ 최신 요약\n"
-    for item in recent:
-        rel_path = get_relative_path(README_PATH, item['filepath'])
-        content += f"- [{item['date']} [{item['topic']}] {item['title']}]({rel_path})\n"
-    
-    # Topics
-    content += "\n### 📂 토픽별 모아보기\n"
-    for topic in topic_list:
-        topic_filename = f"{topic.lower().replace(' ', '-')}.md"
-        content += f"- [{topic}](topics/{topic_filename})\n"
-        
-    # Archives (Group by Year/Month logic could be added here, currently hardcoded in template or dynamic scan)
-    # For now, let's keep the user's manual structure for Archives or generate it.
-    # To keep it simple and safe, I will append the dynamic parts to a template or just rewrite sections if markers exist.
-    # Since I am rewriting the whole file based on the user's previous request structure:
-    
-    content += "\n### 📅 월별 아카이브\n"
-    # Find all year/month directories
-    years = sorted([d for d in os.listdir(ARCHIVES_DIR) if d.isdigit() and os.path.isdir(os.path.join(ARCHIVES_DIR, d))], reverse=True)
-    for year in years:
-        year_path = os.path.join(ARCHIVES_DIR, year)
-        months = sorted([d for d in os.listdir(year_path) if d.isdigit() and os.path.isdir(os.path.join(year_path, d))], reverse=True)
-        for month in months:
-            content += f"- [{year}년 {month}월](archives/{year}/{month}/)\n"
-
-    content += f"\n### 🗄️ 연도별\n"
-    for year in years:
-        content += f"- [{year}년 전체](archives/{year}/)\n"
-
     with open(README_PATH, 'w', encoding='utf-8') as f:
         f.write(content)
 
@@ -272,15 +172,14 @@ def handle_raw_files(root_dir):
     Moves *-original.md files to raw/ subdirectory and updates referencing summaries.
     """
     for root, dirs, files in os.walk(root_dir):
-        # Skip if we are already in a raw directory
-        if os.path.basename(root) == "raw" or "raw" in dirs:
-             # If "raw" is in dirs, we are in the parent (e.g. 12/). We want to process this dir.
-             # If basename is "raw", we are inside raw/. Skip.
-             pass
-        
+        # Skip weird directories or the old '2025' style if desired, but general walk is fine.
+        # But we must ensure we don't process raw folder itself.
         if os.path.basename(root) == "raw":
             continue
-
+            
+        # We only want to process "Type" directories (e.g. archives/terraform).
+        # But recursively it's fine as long as we put raw in the same folder.
+        
         raw_dir = os.path.join(root, "raw")
         
         # 1. Move original files
@@ -292,26 +191,24 @@ def handle_raw_files(root_dir):
                 src = os.path.join(root, file)
                 dst = os.path.join(raw_dir, file)
                 
-                # Avoid moving if already there (shouldn't happen due to walk check, but safety)
                 if not os.path.exists(dst):
                     print(f"Moving raw file: {file} -> raw/")
                     os.rename(src, dst)
         
         # 2. Update links in summary files
-        # We look for all summaries in this folder and check if they need a link update
-        # Heuristic: match regex [📄 원본 파일 보기](...)
-        if not os.path.exists(raw_dir):
+        # Check files in this directory
+        summary_files = [f for f in files if f.endswith(".md") and not f.endswith("-original.md") and f != "README.md"]
+        
+        if not summary_files:
             continue
             
-        raw_files = os.listdir(raw_dir)
-        summary_files = [f for f in files if f.endswith(".md") and not f.endswith("-original.md") and f != "README.md"]
+        # Ensure raw_dir exists if we are going to use it for fetching
+        # (It will be created on save)
+        raw_files = os.listdir(raw_dir) if os.path.exists(raw_dir) else []
         
         for summary_file in summary_files:
             summary_path = os.path.join(root, summary_file)
             
-            # Expected raw filename: summary_filename without extension + -original.md?
-            # Or just check if any raw file matches the common prefix?
-            # Let's try to find a raw file that matches the summary filename pattern.
             # Check for frontmatter
             origin_doc = None
             doc_type = None
@@ -319,8 +216,7 @@ def handle_raw_files(root_dir):
             
             with open(summary_path, 'r', encoding='utf-8') as f:
                 content = f.read()
-                # Parse YAML-like frontmatter manually or use a simple regex approach for flexibility
-                # Match type: ... and number: ...
+                # Parse YAML-like frontmatter
                 type_match = re.search(r"^type:\s*(.+)$", content, re.MULTILINE)
                 num_match = re.search(r"^number:\s*(\d+)$", content, re.MULTILINE)
                 origin_match = re.search(r"^origin-doc:\s*['\"]?(.*?)['\"]?$", content, re.MULTILINE)
@@ -338,31 +234,19 @@ def handle_raw_files(root_dir):
                 target_fetch_name = origin_doc
                 search_mode = "filename"
             elif doc_type and doc_number is not None:
-                # Type/Number mode
-                # We don't know the full filename yet, we have to find it.
-                # But we need a local filename to save it as.
-                # If we fetch successfully, we will get the real filename.
-                # For now, let's defer the local naming until we fetch?
-                # Or we can prefer the fetched filename.
                 search_mode = "type_number"
-                expected_raw_name = None # Will determine after fetch (heuristic: if local exists, we need to know name)
+                expected_raw_name = None 
             else:
-                # Fallback
                 base_name = os.path.splitext(summary_file)[0]
                 expected_raw_name = f"{base_name}-original.md"
                 target_fetch_name = summary_file
                 search_mode = "filename"
             
-            # If we know the expected name (Filename or Origin-doc mode), check existence
+            # If we know the expected name
+            should_fetch = True
             if expected_raw_name:
                  expected_raw_path = os.path.join(raw_dir, expected_raw_name)
                  should_fetch = not os.path.exists(expected_raw_path)
-            else:
-                 # Type/Number mode: we check if we already have a raw file that "looks like" the number?
-                 # Too complex. Let's simplfy: Always try to fetch/check if specific raw file is missing?
-                 # Actually, if we don't know the filename, we can't check existence easily without scanning dir.
-                 # Let's try to fetch if we are in Type/Number mode and haven't linked a raw file yet?
-                 should_fetch = True 
 
             fetched_filename = None
             
@@ -375,15 +259,14 @@ def handle_raw_files(root_dir):
                      found_name, content_text = fetch_by_type_and_number(doc_type, doc_number)
                      if found_name:
                          fetched_filename = found_name
-                         expected_raw_name = found_name # Now we know
+                         expected_raw_name = found_name 
                 
                 elif search_mode == "filename":
-                    # Only fetch if not exists
-                    if not os.path.exists(expected_raw_path):
+                    if not os.path.exists(os.path.join(raw_dir, expected_raw_name)):
                         print(f"Attempting to fetch original '{target_fetch_name}'...")
                         content_text = fetch_from_private_repo(target_fetch_name)
                         if content_text:
-                            fetched_filename = expected_raw_name # We use the expected name
+                            fetched_filename = expected_raw_name 
 
                 # Save if we got content
                 if content_text and expected_raw_name:
@@ -391,80 +274,48 @@ def handle_raw_files(root_dir):
                         os.makedirs(raw_dir)
                     
                     save_path = os.path.join(raw_dir, expected_raw_name)
-                    # Don't overwrite if exists (safety)
                     if not os.path.exists(save_path):
                         with open(save_path, 'w', encoding='utf-8') as f:
                             f.write(content_text)
                         print(f"Fetched and saved: {expected_raw_name}")
                         if expected_raw_name not in raw_files:
                             raw_files.append(expected_raw_name)
-                    else:
-                        # existed locally but maybe we didn't know the name mapping?
-                        pass
 
-            # Update link if we have a target raw file
-            # In Type/Number mode, expected_raw_name is now set if fetch succeeded OR if we found a matching file locally?
-            
-            # If we failed to fetch (or offline), can we still link?
-            # If we have Type/Number, we might want to scan local raw/ folder for matching number?
-            # Heuristic: if raw/001. ... .md exists? 
-            # Let's stick to: "If file exists in raw/, link it."
-            
-            # If we fetched, expected_raw_name is set.
-            # If we didn't fetch (already exists), we rely on... existing logic? 
-            # Existing logic was simple: expected_raw_name = base-original.md.
-            # Now we have variable filenames.
-            
-            # Revised Linking Logic:
-            # 1. If we have expected_raw_name (from fetch or origin-doc), use it.
-            # 2. If not, scan raw_dir for a "best match"?
-            #    Match: starts with number? (if type/number provided)
-            
+            # Link Logic
             target_raw_file = expected_raw_name
             
+            # If still null, try finding match in local raw dir by number prefix
             if not target_raw_file and doc_number is not None and os.path.exists(raw_dir):
-                 # Try to find local file starting with number
                  for f in os.listdir(raw_dir):
-                     # Check for 001, 1, 01 prefixes
                      if f.startswith(f"{doc_number:03d}.") or f.startswith(f"{doc_number}.") or f.startswith(f"{doc_number:02d}."):
                          target_raw_file = f
                          break
             
-            if target_raw_file and target_raw_file in os.listdir(raw_dir):
-                # Do the linking
+            if target_raw_file and os.path.exists(raw_dir) and target_raw_file in os.listdir(raw_dir):
                 expected_raw_name = target_raw_file # consistency
                  
                 with open(summary_path, 'r', encoding='utf-8') as f:
                     content = f.read()
                 
-                # URL encode the filename for the link
                 encoded_name = urllib.parse.quote(expected_raw_name)
                 link_text = f"[📄 원본 파일 보기](raw/{encoded_name})"
                 placeholder_regex = r'\(raw/.*?-original\.md\)'
                  
-                # Check for encoded presence
                 if f"(raw/{encoded_name})" in content:
                     continue
 
-                # Check if unencoded link exists and needs fixing
-                unencoded_link = f"(raw/{expected_raw_name})"
-                if unencoded_link in content:
-                    # Fix it
-                     content = content.replace(unencoded_link, f"(raw/{encoded_name})")
+                if f"(raw/{expected_raw_name})" in content:
+                     content = content.replace(f"(raw/{expected_raw_name})", f"(raw/{encoded_name})")
                      with open(summary_path, 'w', encoding='utf-8') as f:
-                        f.write(content)
+                         f.write(content)
                      continue
 
-                # 1. Replace existing placeholder
                 if re.search(placeholder_regex, content):
-                    content = re.sub(placeholder_regex, f'(raw/{expected_raw_name})', content)
+                    content = re.sub(placeholder_regex, f'(raw/{encoded_name})', content)
                 else:
-                    # 2. Inject if missing
-                    # Insert after the first H2 header (## ...)
-                    # Find the header line
+                    # Inject after header
                     header_match = re.search(r'^(##\s+.*)$', content, re.MULTILINE)
                     if header_match:
-                        # Insert link after the header
                         header_end = header_match.end()
                         new_content = content[:header_end] + f"\n\n{link_text}\n" + content[header_end:]
                         content = new_content
@@ -474,6 +325,22 @@ def handle_raw_files(root_dir):
                 with open(summary_path, 'w', encoding='utf-8') as f:
                     f.write(content)
 
+def update_type_readme(type_name, summaries, readme_path):
+    """
+    Generates README.md for a type directory.
+    """
+    # Sort summaries
+    summaries.sort(key=lambda x: x['date'] or "", reverse=True)
+    
+    content = f"# {type_name.capitalize()}\n\n[← Dashboard](../../README.md)\n\n## 📚 학습 로그\n"
+    for item in summaries:
+        # Link to the file (it's in the same directory)
+        link = item['filename']
+        content += f"- [{item['date']} {item['title']}]({link})\n"
+        
+    with open(readme_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+
 def main():
     # 0. Organize Raw Files first
     handle_raw_files(ARCHIVES_DIR)
@@ -481,23 +348,70 @@ def main():
     summaries = []
     
     # Walk through archives
+    # We expect archives/{type}/*.md
+    # We want to group by type to generate type READMEs
+    
+    type_groups = defaultdict(list)
+    
     for root, dirs, files in os.walk(ARCHIVES_DIR):
+        # Determine type from directory name?
+        # root = archives/terraform
+        rel_path = os.path.relpath(root, ARCHIVES_DIR)
+        
+        if rel_path == ".":
+            continue
+        
+        # If deeply nested, take the first component as type?
+        # e.g. terraform/subdir -> type=terraform
+        parts = rel_path.split(os.sep)
+        current_type = parts[0]
+        
+        # Skip numeric folders (old archives) just in case
+        if current_type.isdigit():
+             continue
+             
         for file in files:
             if file.endswith(".md") and file != "README.md" and not file.endswith("-original.md"):
                 path = os.path.join(root, file)
                 data = parse_summary_file(path)
-                if data['date']: # Only add successfully parsed files
+                if data['date']:
+                    # Enforce type from directory if frontmatter is missing?
+                    # Or trust directory more?
+                    # Let's trust directory as the grouping key.
+                    data['type'] = current_type # Override/Set type based on folder
                     summaries.append(data)
-    
+                    type_groups[current_type].append(data)
+
     print(f"Found {len(summaries)} summaries.")
     
-    topic_list = update_topic_indices(summaries)
-    print(f"Updated {len(topic_list)} topics.")
+    # Update Type READMEs
+    for type_name, items in type_groups.items():
+        type_dir = os.path.join(ARCHIVES_DIR, type_name)
+        readme_path = os.path.join(type_dir, "README.md")
+        update_type_readme(type_name, items, readme_path)
+        print(f"Updated README for {type_name}")
+
+    # No more monthly indices
     
-    update_monthly_indices(summaries)
-    print("Updated monthly indices.")
+    # Update Main README
+    # Reuse update_main_readme logic but adapted
     
-    update_main_readme(summaries, topic_list)
+    summaries.sort(key=lambda x: x['date'] or "", reverse=True)
+    recent = summaries[:RECENT_LIMIT]
+    
+    content = "# 💡 메인 대시보드\n\n"
+    content += "### ⚡ 최신 요약\n"
+    for item in recent:
+        rel_path = get_relative_path(README_PATH, item['filepath'])
+        content += f"- [{item['date']} [{item['type']}] {item['title']}]({rel_path})\n"
+    
+    content += "\n### 📂 토픽별 모아보기\n"
+    for type_name in sorted(type_groups.keys()):
+        # Link to archives/{type_name}/
+        content += f"- [{type_name.capitalize()}](archives/{type_name}/)\n"
+        
+    with open(README_PATH, 'w', encoding='utf-8') as f:
+        f.write(content)
     print("Updated main README.")
 
 if __name__ == "__main__":
