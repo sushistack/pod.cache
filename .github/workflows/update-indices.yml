@@ -5,6 +5,7 @@ on:
     paths:
       - 'archives/**'
       - 'scripts/**'
+  workflow_dispatch:
 
 jobs:
   update-indices:
