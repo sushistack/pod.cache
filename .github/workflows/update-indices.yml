@@ -31,5 +31,5 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add README.md topics/ archives/
+          git add README.md archives/
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update indices" && git push)
