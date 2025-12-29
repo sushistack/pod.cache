@@ -5,6 +5,9 @@ number: 1
 
 ## 2025-12-22 Why Multithreading?
 
+[📄 원본 파일 보기](raw/001.%20Motivation%20%26%20Operating%20Systems%20fundamentals-%20Part%201.md)
+
+
 <details>
 <summary>🚀 왜 멀티스레딩인가 반응성과 성능의 비밀</summary>
 

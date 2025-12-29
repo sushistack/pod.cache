@@ -5,6 +5,9 @@ number: 1
 
 ## 2025-12-29 What is AWS IAM(Identity and Access Management)
 
+[📄 원본 파일 보기](raw/001.%20Course%20Introduction%20-%20AWS%20Certified%20Developer%20Associate.md)
+
+
 <details>
 <summary>복습 키워드: IAM, 사용자, 그룹, 정책, 최소 권한 원칙</summary>
 

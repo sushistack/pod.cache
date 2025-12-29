@@ -5,6 +5,9 @@ number: 2
 
 ## 2025-12-29 IAM Policies
 
+[📄 원본 파일 보기](raw/002.%20Creating%20an%20AWS%20Account.md)
+
+
 <details>
 <summary>복습 키워드: IAM 정책, 권한 부여 방법, IAM 정책의 구조</summary>
 

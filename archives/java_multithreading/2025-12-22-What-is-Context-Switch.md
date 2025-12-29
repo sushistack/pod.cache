@@ -5,6 +5,9 @@ number: 2
 
 ## 2025-12-22 What is Context Switch?
 
+[📄 원본 파일 보기](raw/002.%20Operating%20Systems%20Fundamentals%20-%20Part%202.md)
+
+
 <details>
 <summary>복습 키워드: (여기에 키워드 3개 적기)</summary>
 
