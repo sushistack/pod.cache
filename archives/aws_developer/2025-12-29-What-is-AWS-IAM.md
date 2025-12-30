@@ -1,11 +1,9 @@
 ---
 type: aws_developer
-number: 1
+number: 8
 ---
 
 ## 2025-12-29 What is AWS IAM(Identity and Access Management)
-
-[📄 원본 파일 보기](raw/001.%20Course%20Introduction%20-%20AWS%20Certified%20Developer%20Associate.md)
 
 
 <details>
