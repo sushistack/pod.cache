@@ -5,6 +5,9 @@ number: 19
 
 ## 2025-12-30 Base, Chat, Reasoning 모델 완벽 분석
 
+[📄 원본 파일 보기](raw/019.%20Day%203%20-%20Base%2C%20Chat%2C%20and%20Reasoning%20Models%20Understanding%20LLM%20Types.md)
+
+
 <details>
 <summary>Base, Chat, Reasoning 모델 완벽 분석</summary>
 

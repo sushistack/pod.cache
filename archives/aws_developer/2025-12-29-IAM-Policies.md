@@ -5,6 +5,9 @@ number: 11
 
 ## 2025-12-29 IAM Policies
 
+[📄 원본 파일 보기](raw/011.%20IAM%20Policies.md)
+
+
 <details>
 <summary>복습 키워드: IAM 정책, 권한 부여 방법, IAM 정책의 구조</summary>
 
