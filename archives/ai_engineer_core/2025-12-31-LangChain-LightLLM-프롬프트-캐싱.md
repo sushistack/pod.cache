@@ -5,6 +5,9 @@ number: 41
 
 ## 2025-12-31 LangChain, LightLLM, 그리고 프롬프트 캐싱
 
+[📄 원본 파일 보기](raw/041.%20Day%201%20-%20LangChain%20vs%20LiteLLM%20Choosing%20the%20Right%20LLM%20Framework.md)
+
+
 [📄 원본 파일 보기](raw/038.%20Day%201%20-%20Testing%20GPT-5%20Models%20with%20Reasoning%20Effort%20and%20Scaling%20Puzzles.md)
 
 
