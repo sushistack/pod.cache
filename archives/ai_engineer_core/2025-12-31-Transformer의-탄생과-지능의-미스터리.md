@@ -5,6 +5,9 @@ number: 26
 
 ## 2025-12-31 Transformer의 탄생과 지능의 미스터리
 
+[📄 원본 파일 보기](raw/026.%20Day%204%20-%20From%20LSTMs%20to%20Transformers%20Attention%2C%20Emergent%20Intelligence%20%26%20Agentic%20A.md)
+
+
 <details>
 <summary>Transformer, 프롬프트 엔지니어링, Context Engineering, AI Agent</summary>
 
