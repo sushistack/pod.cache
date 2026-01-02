@@ -5,6 +5,9 @@ number: 19
 
 ## 2026-01-02 AWS CloudShell
 
+[📄 원본 파일 보기](raw/019.%20AWS%20CloudShell.md)
+
+
 <details>
 <summary>복습 키워드: AWS CloudShell의 핵심 기능과 활용</summary>
 

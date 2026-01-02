@@ -1,11 +1,11 @@
 # 💡 메인 대시보드
 
 ### ⚡ 최신 요약
+- [2026-01-02 [aws_developer] 자격 증명 보고서와 액세스 어드바이저](archives/aws_developer/2026-01-02-IAM-자격-증명-보고서와-액세스-어드바이저.md)
+- [2026-01-02 [aws_developer] IAM 사용자 보호](archives/aws_developer/2026-01-02-IAM-사용자-보호 copy.md)
+- [2026-01-02 [aws_developer] AWS CloudShell](archives/aws_developer/2026-01-02-AWS-CloudShell.md)
+- [2026-01-02 [aws_developer] IAM Role](archives/aws_developer/2026-01-02-IAM-Role.md)
 - [2025-12-31 [ai_engineer_core] Transformer의 탄생과 지능의 미스터리](archives/ai_engineer_core/2025-12-31-Transformer의-탄생과-지능의-미스터리.md)
-- [2025-12-31 [ai_engineer_core] OpenAI API를 활용한 구조화된 JSON 출력 제어](archives/ai_engineer_core/2025-12-31-JSON-출력-제어 copy.md)
-- [2025-12-31 [ai_engineer_core] 모델 크기 vs 추론 노력](archives/ai_engineer_core/2025-12-31-모델-크기-vs-추론-노력.md)
-- [2025-12-31 [ai_engineer_core] LLM의 기억: 환상과 현실](archives/ai_engineer_core/2025-12-31-LLM의-기억.md)
-- [2025-12-31 [ai_engineer_core] 토큰과 토크나이저](archives/ai_engineer_core/2025-12-31-토큰과-토크나이저.md)
 
 ### 📂 토픽별 모아보기
 - [Ai_engineer_core](archives/ai_engineer_core/)
