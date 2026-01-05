@@ -5,6 +5,9 @@ number: 28
 
 ## 2026-01-05 Amazon EC2 Basic
 
+[📄 원본 파일 보기](raw/028.%20EC2%20Basics.md)
+
+
 
 <details>
 <summary>복습 키워드: Amazon EC2 Basic</summary>
