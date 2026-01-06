@@ -5,6 +5,9 @@ number: 37
 
 ## 2026-01-06 EC2 Instance Connect
 
+[📄 원본 파일 보기](raw/037.%20EC2%20Instance%20Connect.md)
+
+
 <details>
 <summary>복습 키워드: EC2 Instance Connect</summary>
 
