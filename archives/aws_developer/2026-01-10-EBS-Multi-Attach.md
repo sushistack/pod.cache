@@ -5,6 +5,9 @@ number: 48
 
 ## 2026-01-10 EBS Multi-Attach
 
+[📄 원본 파일 보기](raw/048.%20EBS%20Multi-Attach.md)
+
+
 <details>
 <summary>복습 키워드: EBS Multi-Attach, EBS Multi-Attach의 주요 특징 및 고려사항, EBS Multi-Attach의 활용 사례</summary>
 
