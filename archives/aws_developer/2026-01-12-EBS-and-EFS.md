@@ -5,6 +5,9 @@ number: 51
 
 ## 2026-01-12 EBS와 EFS, 무엇이 다를까?
 
+[📄 원본 파일 보기](raw/051.%20EFS%20vs%20EBS.md)
+
+
 
 <details>
 <summary>복습 키워드: EBS, EFS, Instance Store의 차이와 활용</summary>
