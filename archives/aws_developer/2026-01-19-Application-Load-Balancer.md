@@ -5,6 +5,9 @@ number: 55
 
 ## 2026-01-19 Application Load Balancer
 
+[📄 원본 파일 보기](raw/055.%20Application%20Load%20Balancer%20%28ALB%29.md)
+
+
 <details>
 <summary>복습 키워드: ALB, 특징 및 장점, 고급 라우팅 기능, 타겟 그룹, 고려사항</summary>
 

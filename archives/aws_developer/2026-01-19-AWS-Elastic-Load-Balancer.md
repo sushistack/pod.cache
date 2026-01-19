@@ -5,6 +5,9 @@ number: 54
 
 ## 2026-01-19 로드 밸런서란 무엇인가요?
 
+[📄 원본 파일 보기](raw/054.%20Elastic%20Load%20Balancing%20%28ELB%29%20Overview.md)
+
+
 <details>
 <summary>복습 키워드: 로드밸런서, LB 이점, ELB 이점, ELB 종류, 보안 설정</summary>
 

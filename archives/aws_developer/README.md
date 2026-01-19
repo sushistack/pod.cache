@@ -3,6 +3,8 @@
 [← Dashboard](../../README.md)
 
 ## 📚 학습 로그
+- [2026-01-19 로드 밸런서란 무엇인가요?](2026-01-19-AWS-Elastic-Load-Balancer.md)
+- [2026-01-19 Application Load Balancer](2026-01-19-Application-Load-Balancer.md)
 - [2026-01-12 EBS와 EFS, 무엇이 다를까?](2026-01-12-EBS-and-EFS.md)
 - [2026-01-12 확장성 및 고가용성](2026-01-12-확장성-and-고가용성.md)
 - [2026-01-10 Amazon EFS란?](2026-01-10-AWS-EFS.md)
