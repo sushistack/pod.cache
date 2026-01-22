@@ -4,6 +4,9 @@ number: 61
 ---
 
 ## 2026-01-22 AWS ELB Sticky Session
+
+[📄 원본 파일 보기](raw/061.%20Elastic%20Load%20Balancer%20-%20Sticky%20Sessions.md)
+
 <details>
 <summary>복습 키워드:Sticky Session이란?, 장단점, Sticky Session 쿠키 유형</summary>
 

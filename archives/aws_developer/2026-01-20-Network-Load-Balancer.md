@@ -5,6 +5,9 @@ number: 58
 
 ## 2026-01-20 Network Load Balancer
 
+[📄 원본 파일 보기](raw/058.%20Network%20Load%20Balancer%20%28NLB%29.md)
+
+
 <details>
 <summary>복습 키워드: NLB란, 타겟 그룹, 헬스 체크 프로토콜 지원</summary>
 

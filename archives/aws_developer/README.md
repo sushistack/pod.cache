@@ -3,6 +3,10 @@
 [← Dashboard](../../README.md)
 
 ## 📚 학습 로그
+- [2026-01-22 AWS ELB Sticky Session](2026-01-22-ELB-Sticky-Session.md)
+- [2026-01-22 Gateway Load Balancer](2026-01-22-Gateway-Load-Balancer.md)
+- [2026-01-20 EC2 보안 강화 및 고급 트래픽 라우팅 전략](2026-01-20-EC2-보안-강화-및-고급-트래픽-라우팅-전략.md)
+- [2026-01-20 Network Load Balancer](2026-01-20-Network-Load-Balancer.md)
 - [2026-01-19 로드 밸런서란 무엇인가요?](2026-01-19-AWS-Elastic-Load-Balancer.md)
 - [2026-01-19 Application Load Balancer](2026-01-19-Application-Load-Balancer.md)
 - [2026-01-12 EBS와 EFS, 무엇이 다를까?](2026-01-12-EBS-and-EFS.md)

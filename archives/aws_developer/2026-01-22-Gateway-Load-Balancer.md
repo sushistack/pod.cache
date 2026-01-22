@@ -5,6 +5,9 @@ number: 60
 
 ## 2026-01-22 Gateway Load Balancer
 
+[📄 원본 파일 보기](raw/060.%20Gateway%20Load%20Balancer%20%28GWLB%29.md)
+
+
 <details>
 <summary>복습 키워드: GWLB란, 핵심기능 4개, 다른 LB와 비교</summary>
 
