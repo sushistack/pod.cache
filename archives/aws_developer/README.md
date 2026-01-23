@@ -3,6 +3,8 @@
 [← Dashboard](../../README.md)
 
 ## 📚 학습 로그
+- [2026-01-23 크로스존 로드 밸런싱](2026-01-23-크로스존-로드-밸런싱.md)
+- [2026-01-23 SSL/TLS 인증서](2026-01-23-SSL-TLS.md)
 - [2026-01-22 AWS ELB Sticky Session](2026-01-22-ELB-Sticky-Session.md)
 - [2026-01-22 Gateway Load Balancer](2026-01-22-Gateway-Load-Balancer.md)
 - [2026-01-20 EC2 보안 강화 및 고급 트래픽 라우팅 전략](2026-01-20-EC2-보안-강화-및-고급-트래픽-라우팅-전략.md)
